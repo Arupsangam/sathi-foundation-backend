@@ -6,8 +6,13 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Reliable Middleware
-app.use(cors({ origin: '*' }));
+// ✅ CORS Fix for Render + Vercel
+app.use(cors({
+  origin: '*',                    // Sab jagah se allow (Vercel, localhost, phone)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,9 +38,10 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/donations', donationRoutes);
 
-app.get('/', (req, res) => res.send('✅ Sathi Backend Running - Multi Device Ready'));
+app.get('/', (req, res) => {
+  res.send('✅ Sathi Backend is Live - CORS Fixed');
+});
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Backend running on http://10.21.21.59:${PORT}`);
-  console.log(`📱 Phone pe bhi use kar sakte ho`);
+  console.log(`🚀 Backend running on https://sathi-foundation-backend.onrender.com`);
 });
