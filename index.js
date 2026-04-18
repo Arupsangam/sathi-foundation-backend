@@ -1,10 +1,18 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+
+// ✅ Automatically create the 'public/uploads' directory for Render if it's missing!
+const uploadDir = path.join(__dirname, 'public/uploads');
+if (!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // ✅ CORS Fix for Render + Vercel
 app.use(cors({
@@ -43,5 +51,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Backend running on https://sathi-foundation-backend.onrender.com`);
+  console.log(`🚀 Backend running on port ${PORT}`);
 });
